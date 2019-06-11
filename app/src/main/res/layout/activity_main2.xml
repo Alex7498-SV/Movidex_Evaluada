@@ -4,15 +4,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
+        tools:context=".Main2Activity"
         android:orientation="vertical">
 
     <include layout="@layout/actionbar"/>
 
     <fragment
-        android:id="@+id/fragment_principal"
+        android:id="@+id/fragment_secundario"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.movidex.principalFragment"/>
+        android:name="com.example.movidex.secondFragment"/>
 
 </LinearLayout>
