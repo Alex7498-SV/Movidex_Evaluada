@@ -17,6 +17,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/ed_buscar"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:singleLine="true"

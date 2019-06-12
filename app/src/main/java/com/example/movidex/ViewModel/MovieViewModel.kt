@@ -1,6 +1,8 @@
 package com.example.movidex.ViewModel
 
 import android.app.Application
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -11,9 +13,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MovieViewModel(app: Application): AndroidViewModel(app) {
+class MovieViewModel(var app: Application): AndroidViewModel(app) {
 
-    private var repository:MovieRepo?=null
+    private var repository:MovieRepo
 
     init{
         val movieDao = RoomMovieDB.getDatabase(app).moviedao()
@@ -28,5 +30,31 @@ class MovieViewModel(app: Application): AndroidViewModel(app) {
 
     fun getOne(id: Int) = repository!!.getOne(id)
 
+    suspend fun nuke() = repository.nuke()
+
+    fun retrievePelis(eje : String) = viewModelScope.launch {
+        this@MovieViewModel.nuke()
+
+        val response = repository?.retrieveRepoAsync(eje)?.await()
+        if (response!!.isSuccessful) with(response?.body()?.Search){
+            this?.forEach{
+                insertMovie(it.imdbID)
+            }
+        } else with(response){
+            when(this.code()){
+                404 -> {
+                    Toast.makeText(app, "Error", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    fun insertMovie(id : String) = viewModelScope.launch {
+        val response2 = repository?.retrieveRepoOneAsync(id).await()
+        if (response2.isSuccessful) with(response2.body()) {
+            this@MovieViewModel.insert(this!!)
+            Log.d("respuesta", this.Released)
+        }
+    }
 
 }

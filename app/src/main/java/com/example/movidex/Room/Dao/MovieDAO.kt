@@ -19,4 +19,7 @@ interface MovieDAO {
     @Query("SELECT * FROM Movie WHERE M_imbdID = (:ID)")
     fun getOneMovie(ID : Int) : LiveData<Movie>
 
+    @Query("DELETE FROM Movie")
+    suspend fun nuke()
+
 }
