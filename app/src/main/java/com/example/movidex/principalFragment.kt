@@ -7,6 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.movidex.Adapter.AdapterMovies
+import com.example.movidex.Room.Entities.Movie
+import com.example.movidex.ViewModel.MovieViewModel
+import kotlinx.android.synthetic.main.fragment_principal.*
+import kotlinx.android.synthetic.main.fragment_principal.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,15 +46,29 @@ class principalFragment : Fragment() {
         }
     }
 
+    private lateinit var viewModel : MovieViewModel
+    private lateinit var adapter : AdapterMovies
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_principal, container, false)
+        var view = inflater.inflate(R.layout.fragment_principal, container, false)
+
+        adapter = AdapterMovies(emptyList(), { movie: Movie -> (listener?.onFragmentInteraction(movie))})
+
+        view.rv_movies.adapter = adapter
+        view.rv_movies.layoutManager = LinearLayoutManager(context)
+
+        viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
+
+        viewModel.getAll().observe(this, Observer {movie ->
+            movie?.let { adapter.setMovie(it) }
+        })
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onButtonPressed(movie: Movie) {
+        listener?.onFragmentInteraction(movie)
     }
 
     override fun onAttach(context: Context) {
@@ -75,7 +98,7 @@ class principalFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onFragmentInteraction(movie: Movie)
     }
 
     companion object {

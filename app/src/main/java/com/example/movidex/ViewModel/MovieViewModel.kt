@@ -32,7 +32,7 @@ class MovieViewModel(var app: Application): AndroidViewModel(app) {
 
     suspend fun nuke() = repository.nuke()
 
-    fun retrievePelis(eje : String) = viewModelScope.launch {
+    fun retrievePelis(eje : String) = viewModelScope.launch(Dispatchers.IO) {
         this@MovieViewModel.nuke()
 
         val response = repository?.retrieveRepoAsync(eje)?.await()

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:layout_marginBottom="8dp">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/iv_poster"
+            android:layout_alignRight="@id/iv_poster"
+            android:layout_alignBottom="@id/iv_poster"
+            android:layout_margin="16dp"
+
+            android:background="#65000000"
+            android:gravity="end"
+
+            android:lines="1"
+            android:padding="8dp"
+
+            android:text=""
+            android:textColor="#fff"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tv_calificion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/iv_poster"
+            android:layout_alignLeft="@id/iv_poster"
+            android:layout_alignTop="@id/iv_poster"
+
+            android:layout_margin="16dp"
+            android:background="#65000000"
+
+            android:gravity="end"
+            android:padding="8dp"
+
+            android:text=""
+            android:textColor="#fff"
+
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:id="@+id/data_container_ll_cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_poster"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:ellipsize="end"
+                android:lines="3"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/tv_tiempo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="end"
+                android:text="" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
