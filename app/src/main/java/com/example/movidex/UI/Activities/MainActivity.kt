@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
@@ -16,6 +17,7 @@ import com.example.movidex.UI.Fragments.secondFragment
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_principal.*
+import java.io.File
 
 class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractionListener {
     override fun onClickListenerPortrait(movie: Movie) {
@@ -37,11 +39,29 @@ class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractio
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
         viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
 
         if(fragment_secundario != null){
             var fragment = secondFragment.newInstance(Movie("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"))
             supportFragmentManager.beginTransaction().replace(R.id.fragment_secundario, fragment).commit()
+        }
+
+        if (isNetworkAvailable()) {
+            val filename2 = "mensaje.txt"
+            var busque = ""
+
+            if (existeA(filename2)){
+                openFileInput(filename2).use {
+                    val text = it.bufferedReader().readText()
+                    busque = text
+                }
+                viewModel.nuke()
+                viewModel.retrievePelis(busque)
+            }
+        } else{
+            Toast.makeText(this, "No tiene acceso a internet!", Toast.LENGTH_LONG).show()
         }
 
         btnAceptar.setOnClickListener {
@@ -50,9 +70,26 @@ class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractio
             } else{
                 Toast.makeText(this, "No tiene acceso a internet!", Toast.LENGTH_LONG).show()
             }
-        }
 
+            val filename = "mensaje.txt"
+
+            val fileContent = ed_buscar.text.toString()
+
+            openFileOutput(filename, Context.MODE_PRIVATE).use {
+                it.write(fileContent.toByteArray())
+            }
+        }
     }
+
+    fun existeA(archbusca : String) : Boolean{
+        fileList().forEach {
+            if (archbusca.equals(it)){
+                return true
+            }
+        }
+        return false
+    }
+
 
     fun isNetworkAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

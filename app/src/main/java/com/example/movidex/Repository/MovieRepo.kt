@@ -29,8 +29,7 @@ class MovieRepo (private val movieDao : MovieDAO) {
         movieDao.insert(movie)
     }
 
-    @WorkerThread
-    suspend fun nuke() = movieDao.nuke()
+    fun nuke() = movieDao.nuke()
 
     fun getAll(): LiveData<List<Movie>> = movieDao.getAllMovies()
 

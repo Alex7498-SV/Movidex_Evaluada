@@ -2,6 +2,9 @@
     <string name="app_name">MoviDex</string>
     <string name="action_settings">Settings</string>
 
+    <string name="preference_file_key">com.example.movidex.PREFERENCE_FILE</string>
+    <string name="save_mensaje_key">busqueda</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -30,11 +30,11 @@ class MovieViewModel(var app: Application): AndroidViewModel(app) {
 
     fun getOne(id: Int) = repository!!.getOne(id)
 
-    suspend fun nuke() = repository.nuke()
+    fun nuke() = viewModelScope.launch(Dispatchers.IO) {
+        repository.nuke()
+    }
 
     fun retrievePelis(eje : String) = viewModelScope.launch(Dispatchers.IO) {
-        this@MovieViewModel.nuke()
-
         val response = repository?.retrieveRepoAsync(eje)?.await()
         if (response!!.isSuccessful) with(response?.body()?.Search){
             this?.forEach{
