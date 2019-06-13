@@ -1,4 +1,4 @@
-package com.example.movidex.Adapter
+package com.example.movidex.UI.Adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +33,8 @@ class AdapterMovies(var movie : List<Movie>, var clickListener : (Movie) -> Unit
                 .into(view.iv_poster)
             view.tv_descripcion.text = movie.Plot
             view.tv_tiempo.text = movie.Runtime
+
+            view.setOnClickListener { clickListener(movie) }
         }
     }
 }

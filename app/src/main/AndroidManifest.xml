@@ -13,10 +13,10 @@
             android:supportsRtl="true"
             android:usesCleartextTraffic="true"
             android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Main2Activity">
+        <activity android:name="com.example.movidex.UI.Activities.Main2Activity">
         </activity>
         <activity
-                android:name=".MainActivity"
+                android:name="com.example.movidex.UI.Activities.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

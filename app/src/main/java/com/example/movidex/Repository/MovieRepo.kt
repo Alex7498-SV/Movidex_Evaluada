@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import com.example.movidex.Room.Dao.MovieDAO
 import com.example.movidex.Room.Entities.Movie
 import com.example.movidex.Room.Entities.busquedaRetro
-import com.example.movidex.retrofit.BusquedaRetrofit
+import com.example.movidex.Retrofit.BusquedaRetrofit
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 

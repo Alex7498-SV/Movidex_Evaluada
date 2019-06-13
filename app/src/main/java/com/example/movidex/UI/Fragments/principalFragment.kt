@@ -1,12 +1,20 @@
-package com.example.movidex
+package com.example.movidex.UI.Fragments
 
 import android.content.Context
-import android.net.Uri
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movidex.UI.Adapter.AdapterMovies
+import com.example.movidex.R
+import com.example.movidex.Room.Entities.Movie
+import com.example.movidex.ViewModel.MovieViewModel
+import kotlinx.android.synthetic.main.fragment_principal.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -17,13 +25,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [secondFragment.OnFragmentInteractionListener] interface
+ * [principalFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [secondFragment.newInstance] factory method to
+ * Use the [principalFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class secondFragment : Fragment() {
+class principalFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -37,15 +45,33 @@ class secondFragment : Fragment() {
         }
     }
 
+    private lateinit var viewModel : MovieViewModel
+    private lateinit var adapter : AdapterMovies
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false)
+        var view = inflater.inflate(R.layout.fragment_principal, container, false)
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+            adapter = AdapterMovies(emptyList(), { movie: Movie -> (listener?.onClickListenerPortrait(movie))})
+        } else{
+            adapter = AdapterMovies(emptyList(), { movie: Movie -> (listener?.onClickListenerLandscape(movie))})
+        }
+
+        view.rv_movies.adapter = adapter
+        view.rv_movies.layoutManager = LinearLayoutManager(context)
+
+        viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
+
+        viewModel.getAll().observe(this, Observer {movie ->
+            movie?.let { adapter.setMovie(it) }
+        })
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onButtonPressed(movie: Movie) {
+        listener?.onClickListenerPortrait(movie)
     }
 
     override fun onAttach(context: Context) {
@@ -75,7 +101,8 @@ class secondFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onClickListenerPortrait(movie: Movie)
+        fun onClickListenerLandscape(movie: Movie)
     }
 
     companion object {
@@ -85,12 +112,12 @@ class secondFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment secondFragment.
+         * @return A new instance of fragment principalFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-                secondFragment().apply {
+                principalFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PARAM1, param1)
                         putString(ARG_PARAM2, param2)

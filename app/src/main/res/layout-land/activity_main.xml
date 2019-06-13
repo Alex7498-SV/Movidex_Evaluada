@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:name="com.example.movidex.principalFragment"/>
+            android:name="com.example.movidex.UI.Fragments.principalFragment"/>
 
         <LinearLayout
             android:id="@+id/fragment_secundario"

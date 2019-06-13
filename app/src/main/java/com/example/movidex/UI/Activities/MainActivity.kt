@@ -1,32 +1,33 @@
-package com.example.movidex
+package com.example.movidex.UI.Activities
 
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.movidex.Adapter.AdapterMovies
+import com.example.movidex.UI.Adapter.AdapterMovies
+import com.example.movidex.R
 import com.example.movidex.Room.Entities.Movie
 import com.example.movidex.ViewModel.MovieViewModel
+import com.example.movidex.UI.Fragments.principalFragment
+import com.example.movidex.UI.Fragments.secondFragment
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_principal.*
 
-class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractionListener , secondFragment.OnFragmentInteractionListener{
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractionListener {
+    override fun onClickListenerPortrait(movie: Movie) {
+        var intent = Intent(this, Main2Activity::class.java)
+        intent.putExtra("movie", movie)
+        startActivity(intent)
     }
 
-    override fun onFragmentInteraction(movie : Movie) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onClickListenerLandscape(movie: Movie) {
+        var fragment = secondFragment.newInstance(movie)
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_secundario, fragment).commit()
     }
 
     lateinit var viewModel : MovieViewModel
@@ -39,7 +40,8 @@ class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractio
         viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
 
         if(fragment_secundario != null){
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_secundario, secondFragment()).commit()
+            var fragment = secondFragment.newInstance(Movie("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"))
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_secundario, fragment).commit()
         }
 
         btnAceptar.setOnClickListener {

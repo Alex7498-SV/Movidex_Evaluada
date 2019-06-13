@@ -1,9 +1,8 @@
-package com.example.movidex.retrofit
+package com.example.movidex.Retrofit
 
 import com.example.movidex.Room.Entities.Movie
 import com.example.movidex.Room.Entities.busquedaRetro
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.Retrofit
