@@ -2,6 +2,7 @@ package com.example.movidex.UI.Activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
@@ -48,20 +49,26 @@ class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractio
             supportFragmentManager.beginTransaction().replace(R.id.fragment_secundario, fragment).commit()
         }
 
-        if (isNetworkAvailable()) {
-            val filename2 = "mensaje.txt"
-            var busque = ""
+        if (savedInstanceState != null){
+            validar = savedInstanceState.getInt("Validar")
+        }
 
-            if (existeA(filename2)){
-                openFileInput(filename2).use {
-                    val text = it.bufferedReader().readText()
-                    busque = text
+        if (validar == 0){
+            if (isNetworkAvailable()) {
+                val filename2 = "mensaje.txt"
+                var busque = ""
+
+                if (existeA(filename2)){
+                    openFileInput(filename2).use {
+                        val text = it.bufferedReader().readText()
+                        busque = text
+                    }
+                    viewModel.nuke()
+                    viewModel.retrievePelis(busque)
                 }
-                viewModel.nuke()
-                viewModel.retrievePelis(busque)
+            } else{
+                Toast.makeText(this, "No tiene acceso a internet!", Toast.LENGTH_LONG).show()
             }
-        } else{
-            Toast.makeText(this, "No tiene acceso a internet!", Toast.LENGTH_LONG).show()
         }
 
         btnAceptar.setOnClickListener {
@@ -90,10 +97,18 @@ class MainActivity : AppCompatActivity(), principalFragment.OnFragmentInteractio
         return false
     }
 
-
+    var validar = 0
     fun isNetworkAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        if (isNetworkAvailable()) {
+            validar = 1
+        }
+        outState?.putInt("Validar", validar)
     }
 }

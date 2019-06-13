@@ -53,7 +53,6 @@ class MovieViewModel(var app: Application): AndroidViewModel(app) {
         val response2 = repository?.retrieveRepoOneAsync(id).await()
         if (response2.isSuccessful) with(response2.body()) {
             this@MovieViewModel.insert(this!!)
-            Log.d("respuesta", this.Released)
         }
     }
 
